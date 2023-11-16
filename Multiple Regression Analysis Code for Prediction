@@ -1,7 +1,7 @@
-I have developed the following predictive analytics code that uses machine learning to make predictions through running multiple linear regressions on the entered customer data.
-The code gives you the ability to enter in your own values for each independent variable and from the model will make predictions on the dependent varibles based on your entries. 
+#I have developed the following predictive analytics code that uses machine learning to make predictions through running multiple linear regressions on the entered customer data.
+#The code gives you the ability to enter in your own values for each independent variable and from the model will make predictions on the dependent varibles based on your entries. 
 
-THE CODE: 
+#THE CODE: 
 # Import necessary libraries
 import pandas as pd
 from sklearn.linear_model import LinearRegression
