@@ -1,0 +1,59 @@
+I have developed the following predictive analytics code that uses machine learning to make predictions through running multiple linear regressions on the entered customer data.
+The code gives you the ability to enter in your own values for each independent variable and from the model will make predictions on the dependent varibles based on your entries. 
+
+THE CODE: 
+# Import necessary libraries
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+
+# Load the data
+data = pd.read_csv('customer_data.csv')
+
+# Define the features and targets
+X = data[['Year_Birth', 'Education', 'Marital_Status', 'Income']]
+y = data[['MntWines', 'MntFruits', 'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts', 'MntGoldProds']]
+
+# Preprocessing: One-hot encoding for categorical features
+categorical_features = ['Education', 'Marital_Status']
+one_hot_encoder = OneHotEncoder(drop='first')
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('cat', one_hot_encoder, categorical_features)],
+    remainder='passthrough'
+)
+
+# Create and train the model
+model = Pipeline([
+    ('preprocessor', preprocessor),
+    ('regressor', MultiOutputRegressor(LinearRegression()))
+])
+
+model.fit(X, y)
+
+# Input new data to predict the product values
+year_birth = int(input("Enter Year of Birth: "))
+education = input("Enter Education (e.g., Graduation, PhD, Master): ")
+marital_status = input("Enter Marital Status (e.g., Single, Together, Married): ")
+income = float(input("Enter Income: "))
+
+# Convert the input data into a DataFrame
+new_data = pd.DataFrame({
+    'Year_Birth': [year_birth],
+    'Education': [education],
+    'Marital_Status': [marital_status],
+    'Income': [income]
+})
+
+# Make a prediction based on the input
+predicted_values = model.predict(new_data)
+print("\nPredicted values for products are:")
+print(f"MntWines: {predicted_values[0][0]:.2f}")
+print(f"MntFruits: {predicted_values[0][1]:.2f}")
+print(f"MntMeatProducts: {predicted_values[0][2]:.2f}")
+print(f"MntFishProducts: {predicted_values[0][3]:.2f}")
+print(f"MntSweetProducts: {predicted_values[0][4]:.2f}")
+print(f"MntGoldProds: {predicted_values[0][5]:.2f}")
